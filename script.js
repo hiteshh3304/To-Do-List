@@ -3,6 +3,7 @@
 const input=document.getElementById('todo-input');
 const addBtn=document.getElementById('add-btn');
 const list=document.getElementById('my-todo-list');
+const dateInput=document.getElementById('todo-date');
 
 // try to load saved todos from local storage
 
@@ -54,6 +55,13 @@ function createTodoNode(todo,index){
             }
         })
 
+        // Date span
+        const dateSpan=document.createElement('span');
+        dateSpan.textContent=todo.date;
+        dateSpan.style.margin = '0 8px';
+        dateSpan.style.fontSize = '0.9em';
+        dateSpan.style.color = '#555';
+
         // delete button
         const delBtn=document.createElement('button');
         delBtn.textContent='Delete';
@@ -67,6 +75,7 @@ function createTodoNode(todo,index){
 
         li.appendChild(checkbox);
         li.appendChild(textspan);
+        li.appendChild(dateSpan);
         li.appendChild(delBtn);
 
         return li;
@@ -89,13 +98,15 @@ function render(){
 
 function addTodo(){
     const text=input.value.trim();
+    const date=dateInput.value;
     if(!text){
         return;// do not add empty todos
     }
 
     // push a new todo object
-    todos.push({text, completed:false});
+    todos.push({text, completed:false,date:date});
     input.value='';
+    dateInput.value='';
     render();
     savetodos();
 }
@@ -106,5 +117,12 @@ input.addEventListener('keypress',(e)=>{
         addTodo();
     }
 })
+
+dateInput.addEventListener('keypress',(e)=>{
+    if(e.key=='Enter'){
+        addTodo();
+    }
+})
 render();
+
 
